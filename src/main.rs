@@ -10,7 +10,7 @@ use matrix_code::render::RenderOptions;
 fn main() {
     stdweb::initialize();
 
-    let div = document().query_selector("stego-container").unwrap();
+    let div = document().query_selector("#stego-container").unwrap();
     loop {
         div.set_text_content(&random_code());
         std::thread::sleep(Duration::from_secs(1));
