@@ -11,9 +11,12 @@ fn main() {
 
     js! {
         var random_code = @{random_code};
-        setInterval(function() {
+
+        var update_div = function() {
             document.getElementById("stego-container").innerHTML = random_code();
-        }, 1000);
+        };
+        update_div();
+        setInterval(update_div, 1000);
     }
 }
 
