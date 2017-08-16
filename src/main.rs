@@ -1,19 +1,19 @@
+#[macro_use]
 extern crate stdweb;
 extern crate rand;
 extern crate matrix_code;
 
-use stdweb::web::{document, INode};
-use std::time::Duration;
 use matrix_code::Stego;
 use matrix_code::render::RenderOptions;
 
 fn main() {
     stdweb::initialize();
 
-    let div = document().query_selector("#stego-container").unwrap();
-    loop {
-        div.set_text_content(&random_code());
-        std::thread::sleep(Duration::from_secs(1));
+    js! {
+        var random_code = @{random_code};
+        setInterval(function() {
+            document.getElementById("stego-container").innerHTML = random_code();
+        }, 1000);
     }
 }
 
