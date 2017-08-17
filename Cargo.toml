@@ -4,6 +4,7 @@ name = "stego_js_demo"
 version = "0.1.0"
 
 [dependencies]
+maud = "0.16.2"
 rand = "0.3.16"
 stdweb = "0.1.1"
 
