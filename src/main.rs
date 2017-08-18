@@ -31,6 +31,7 @@ fn main() {
 
     js! {
         var update_div = function() {
+            console.log("updating svg");
             document.getElementById("stego-container").innerHTML = @{
                 random_code(&options)
             };
