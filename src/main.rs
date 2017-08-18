@@ -13,38 +13,40 @@ use std::collections::HashMap;
 fn main() {
     stdweb::initialize();
 
-    let mut options = RenderOptions::default();
+    let mut fg = None;
+    let mut bg = None;
     if let Some(location) = document().location() {
         let url = Url::parse(&location.href()).unwrap();
         let mut query_map = HashMap::new();
         for (key, value) in url.query_pairs().into_owned() {
             query_map.insert(key, value);
         }
-        
-        if let Some(fg) = query_map.remove("fg") {
-            options.fg_color = fg;
-        }
-        if let Some(bg) = query_map.remove("bg") {
-            options.bg_color = bg;
-        }
+        fg = query_map.remove("fg");
+        bg = query_map.remove("bg");
     }
 
     js! {
+        var random_code = @{random_code};
+
         var update_div = function() {
-            console.log("updating svg");
-            document.getElementById("stego-container").innerHTML = @{
-                random_code(&options)
-            };
+            document.getElementById("stego-container").innerHTML = random_code(@{fg}, @{bg});
         };
         update_div();
         setInterval(update_div, 1000);
     }
 }
 
-fn random_code(options: &RenderOptions) -> String {
+fn random_code(fg: Option<String>, bg: Option<String>) -> String {
     let id = ::rand::random();
     let stego = Stego::new();
-    let bytes = stego.render(id, options);
+    let mut options = RenderOptions::default();
+    if let Some(fg) = fg {
+        options.fg_color = fg;
+    }
+    if let Some(bg) = bg {
+        options.bg_color = bg;
+    }
+    let bytes = stego.render(id, &options);
     unsafe {
         String::from_utf8_unchecked(bytes)
     }
