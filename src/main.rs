@@ -27,13 +27,17 @@ fn main() {
 
     js! {
         var random_code = @{random_code};
+        var fg = @{fg};
+        var bg = @{bg};
 
         var update_div = function() {
-            document.getElementById("stego-container").innerHTML = random_code(@{fg}, @{bg});
+            document.getElementById("stego-container").innerHTML = random_code(fg, bg);
         };
         update_div();
         setInterval(update_div, 1000);
     }
+
+    stdweb::event_loop();
 }
 
 fn random_code(fg: Option<String>, bg: Option<String>) -> String {
